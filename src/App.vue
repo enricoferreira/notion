@@ -47,9 +47,21 @@
 
 export default {
   name: 'App',
-
+  beforeMount(){
+    this.$store.state.auth.onAuthStateChanged((user) => {
+      if (!user) {
+        this.$router.push({
+          name: 'Login'
+        });
+      } else if(this.$route.path == '/login' || this.$route.path == '/register'){
+          this.$router.push({
+            name: 'Home'
+          });
+        }
+    })
+  },
   data: () => ({
-    //
+
   }),
 };
 </script>
