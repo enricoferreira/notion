@@ -8,6 +8,8 @@
       </v-btn>
     </v-app-bar>
 
+    <Loader v-if="$store.state.loader"/>
+
     <v-main>
       <router-view/>
     </v-main>
@@ -15,9 +17,13 @@
 </template>
 
 <script>
+import Loader from '@/components/Loader';
 
 export default {
   name: 'App',
+  components: {
+    Loader
+  },
   methods:{
     logout(){
       this.$store.state.auth.signOut().then(() => {

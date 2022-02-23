@@ -9,7 +9,7 @@
                         </v-card-title>
                         <v-card-text>
                             <v-col cols="12" sm="12">
-                                <v-text-field @keyup.enter="login" v-model="email" label="E-mail"></v-text-field>
+                                <v-text-field @keyup.enter="login" v-model="email" type="email" label="E-mail"></v-text-field>
                             </v-col>
                             <v-col cols="12" sm="12">
                                 <v-text-field @keyup.enter="login" v-model="password" label="Senha"></v-text-field>
@@ -52,13 +52,17 @@ export default {
             this.$router.push({path: '/register'})
         },
         login(){
+          this.$store.commit('CHANGE_LOADER', true);
           this.$store.state.auth.signInWithEmailAndPassword(this.email, this.password)
             .then((userCredential) => {
               console.log(userCredential);
             })
             .catch((error) => {
               console.log(error);
-            });
+            })
+            .finally(() =>{
+              this.$store.commit('CHANGE_LOADER', false);
+            })
         },
     }
 }

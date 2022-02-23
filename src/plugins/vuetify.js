@@ -1,7 +1,11 @@
 import Vue from 'vue';
-import Vuetify from 'vuetify/lib/framework';
+import Vuetify, {
+    VContainer
+} from 'vuetify/lib/framework';
 
-Vue.use(Vuetify);
+Vue.use(Vuetify, {
+    VContainer
+});
 
 export default new Vuetify({
 });

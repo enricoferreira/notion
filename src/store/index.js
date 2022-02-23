@@ -7,9 +7,13 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     db: db,
-    auth: auth
+    auth: auth,
+    loader: false,
   },
   mutations: {
+    CHANGE_LOADER(state, payload){
+      this.state.loader = payload;
+    }
   },
   actions: {
   },

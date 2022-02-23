@@ -41,6 +41,7 @@ export default {
             this.$router.push({path: '/login'})
         },
         signup(){
+            this.$store.commit('CHANGE_LOADER', true);
             this.$store.state.auth.createUserWithEmailAndPassword(this.email, this.password)
                 .then((userCredential) => {
                     // Signed in
@@ -53,7 +54,10 @@ export default {
                     var errorMessage = error.message;
                     // ..
                     console.log(errorCode, errorMessage);
-                });
+                })
+                .finally(() => {
+                    this.$store.commit('CHANGE_LOADER', false);
+                })
         }
     }
 }
