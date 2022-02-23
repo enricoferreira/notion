@@ -57,4 +57,13 @@ export default {
 .pointer{
   cursor: pointer;
 }
+
+.w-100{
+  width: 100%;
+}
+
+.overflow-auto{
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+}
 </style>
