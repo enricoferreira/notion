@@ -30,11 +30,11 @@
             <v-card v-for="(todo, index) in todos" :key="index + 'sheet1'" min-height="180" max-height
               class="w-100 mb-4 elevation-4 drag-cursor">
               <v-card-title class="py-2">
-                <span>
+                <span :class="todo.is_complete ? 'text-decoration-line-through' : ''">
                   {{todo.titulo}}
                 </span>
                 <v-spacer></v-spacer>
-                <v-switch dense hide-details label="Aberta" class="mr-2 mt-0" v-model="todo.is_complete"></v-switch>
+                <v-switch dense hide-details :label="todo.is_complete ? 'Finalizado' : 'Aberto'" class="mr-2 mt-0" v-model="todo.is_complete"></v-switch>
                 <v-btn x-small fab elevation="0">
                   <v-icon>mdi-dots-vertical</v-icon>
                 </v-btn>
@@ -42,7 +42,7 @@
                   <v-icon>mdi-delete</v-icon>
                 </v-btn>
               </v-card-title>
-              <v-card-text class="text-body-1">
+              <v-card-text class="text-body-1" :class="todo.is_complete ? 'text-decoration-line-through' : ''">
                 <strong class="pointer">
                   #{{todo.id}}
                 </strong>
