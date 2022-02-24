@@ -115,6 +115,7 @@ import {db} from '@/firebase'
           this.color_tag = '';
           this.nome_tag = '';
           this.$store.commit('CHANGE_LOADER', false);
+          this.active_add_tag = false;
         })
       },
       abrirAddTag(id){
