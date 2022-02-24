@@ -43,7 +43,7 @@ export default {
         });
       } else if(this.$route.path == '/login' || this.$route.path == '/register'){
           this.$router.push({
-            name: 'Home'
+            name: 'Dash'
           });
         }
     })

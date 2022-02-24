@@ -35,7 +35,10 @@
                 </span>
                 <v-spacer></v-spacer>
                 <v-switch @change="update(todo.id, todo.is_complete)" dense hide-details :label="todo.is_complete ? 'Finalizado' : 'Aberto'" class="mr-2 mt-0" v-model="todo.is_complete"></v-switch>
-                <v-btn x-small fab elevation="0">
+                <v-btn x-small fab elevation="0" @click="abrirAddTag(todo.id)">
+                  <v-icon>mdi-dots-vertical</v-icon>
+                </v-btn>
+                <v-btn class="ml-2" x-small fab elevation="0" @click="abrirOpcoes">
                   <v-icon>mdi-dots-vertical</v-icon>
                 </v-btn>
                 <v-btn @click="remove(todo.id)" class="ml-2" color="error" x-small fab elevation="0">
@@ -66,12 +69,19 @@ import {db} from '@/firebase'
     },
     data(){
       return{
+        active_add_tag: false,
         descricao_task: '',
         titulo_task: '',
         todos: [],
       }
     },
     methods: {
+      abrirAddTag(){
+        this.active_add_tag = true;
+      },
+      abrirOpcoes(){
+
+      },
       validateTitle(e){
         if(e == ''){
           return 'Título não pode ser vazio!'
