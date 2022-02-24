@@ -99,9 +99,9 @@ import {db} from '@/firebase'
       }
     },
     methods: {
-      addTag(){
+      async addTag(){
         this.$store.commit('CHANGE_LOADER', true);
-        this.$store.state.db.collection('todos').doc(this.id_selecionado).collection('tag').add({
+        await this.$store.state.db.collection('todos').doc(this.id_selecionado).collection('tag').add({
           cor: this.color_tag,
           nome_tag: this.nome_tag
         })
