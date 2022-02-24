@@ -5,24 +5,26 @@
         <v-sheet class="overflow-auto fill-height elevation-0 rounded pl-3 pr-6 py-3 grey lighten-5 mr-2">
           <draggable class="list-group" :list="todos" group="card">
             <!-- Insert -->
-            <v-card :draggable="false" min-height="180" max-height
-              class="w-100 mb-4 elevation-4 drag-cursor">
-              <v-card-title class="py-2">
-                <v-text-field filled label="Título da task" placeholder="Novo título" dense hide-details v-model="titulo_task">
-                </v-text-field>
-              </v-card-title>
-              <v-card-text class="text-body-1">
-                <v-textarea label="Descrição" filled dense hide-details placeholder="Descrição da task" v-model="descricao_task">
-                </v-textarea>
-              </v-card-text>
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn color="primary">
-                  <v-icon left>mdi-plus</v-icon>
-                  Adicionar
-                </v-btn>
-              </v-card-actions>
-            </v-card>
+            <v-form ref="form-task">
+              <v-card :draggable="false" min-height="180" max-height
+                class="w-100 mb-4 elevation-4 drag-cursor">
+                <v-card-title class="py-2">
+                  <v-text-field :rules="[validateTitle]" filled label="Título da task" placeholder="Novo título" dense  v-model="titulo_task">
+                  </v-text-field>
+                </v-card-title>
+                <v-card-text class="text-body-1">
+                  <v-textarea label="Descrição" :rules="[validateDesc]" filled dense  placeholder="Descrição da task" v-model="descricao_task">
+                  </v-textarea>
+                </v-card-text>
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn @click="add" color="primary">
+                    <v-icon left>mdi-plus</v-icon>
+                    Adicionar
+                  </v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-form>
 
             <!-- Load -->
             <v-card v-for="(todo, index) in todos" :key="index + 'sheet1'" min-height="180" max-height
@@ -70,13 +72,47 @@ import {db} from '@/firebase'
       }
     },
     methods: {
-      
+      validateTitle(e){
+        if(e == ''){
+          return 'Título não pode ser vazio!'
+        }
+        return true
+      },
+      validateDesc(e){
+        if(e == ''){
+          return 'Descrição não pode ser vazio!'
+        }
+        return true
+
+      },
+      async add(){
+        if(this.$refs['form-task'].validate()){
+          this.$store.commit('CHANGE_LOADER', true);
+          await this.$store.state.db.collection('todos').add({
+            descricao: this.descricao_task,
+            titulo: this.titulo_task,
+            is_complete: false,
+            posicao: 2
+          })
+          .then((doc) => {
+            console.log(doc);
+            this.descricao_task = '';
+            this.titulo_task = '';
+          })
+          .catch((error) => {
+            console.error("Error writing document: ", error);
+          })
+          .finally(() => {
+            this.$store.commit('CHANGE_LOADER', false);
+            this.$refs['form-task'].reset()
+          })
+        }
+      }
     },
     firestore: {
-      todos: db.collection('todos')
+      todos: db.collection('todos').orderBy('posicao')
     },
     name: 'Home',
-
   }
 </script>
 
