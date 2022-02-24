@@ -34,7 +34,7 @@
                   {{todo.titulo}}
                 </span>
                 <v-spacer></v-spacer>
-                <v-switch dense hide-details :label="todo.is_complete ? 'Finalizado' : 'Aberto'" class="mr-2 mt-0" v-model="todo.is_complete"></v-switch>
+                <v-switch @change="update(todo.id, todo.is_complete)" dense hide-details :label="todo.is_complete ? 'Finalizado' : 'Aberto'" class="mr-2 mt-0" v-model="todo.is_complete"></v-switch>
                 <v-btn x-small fab elevation="0">
                   <v-icon>mdi-dots-vertical</v-icon>
                 </v-btn>
@@ -85,6 +85,20 @@ import {db} from '@/firebase'
         return true
 
       },
+      async update(id, is_complete){
+        this.$store.commit('CHANGE_LOADER', true);
+        await this.$store.state.db.collection('todos').doc(id).update({
+          is_complete
+        })
+          .then(() => {
+          })
+          .catch((error) => {
+            console.error("Error writing document: ", error);
+          })
+          .finally(() => {
+            this.$store.commit('CHANGE_LOADER', false);
+          })
+      },
       async remove(id){
         this.$store.commit('CHANGE_LOADER', true);
         await this.$store.state.db.collection('todos').doc(id).delete()
@@ -122,7 +136,7 @@ import {db} from '@/firebase'
       }
     },
     firestore: {
-      todos: db.collection('todos').orderBy('posicao')
+      todos: db.collection('todos').orderBy('is_complete')
     },
     name: 'Home',
   }
