@@ -1,5 +1,25 @@
 <template>
   <v-container>
+    <v-dialog max-width="400" overlay-opacity=".9" v-model="active_add_tag">
+      <v-card>
+        <v-card-title class="py-3">
+          Adicionar tag | {{id_selecionado}}
+        </v-card-title>
+        <v-divider></v-divider>
+        <v-card-text class="pt-3">
+          <v-text-field v-model="nome_tag" filled full-width label="Nome tag">
+          </v-text-field>
+          <v-color-picker mode="rgba" v-model="color_tag">
+          </v-color-picker>
+        </v-card-text>
+        <v-card-actions>
+          <v-btn @click="addTag" block color="primary">
+            <v-icon left>mdi-plus</v-icon>
+            Adicionar
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
     <v-row class="justify-center">
       <v-col cols="12" md="8" sm="6" class="dash">
         <v-sheet class="overflow-auto fill-height elevation-0 rounded pl-3 pr-6 py-3 grey lighten-5 mr-2">
@@ -36,7 +56,7 @@
                 <v-spacer></v-spacer>
                 <v-switch @change="update(todo.id, todo.is_complete)" dense hide-details :label="todo.is_complete ? 'Finalizado' : 'Aberto'" class="mr-2 mt-0" v-model="todo.is_complete"></v-switch>
                 <v-btn x-small fab elevation="0" @click="abrirAddTag(todo.id)">
-                  <v-icon>mdi-dots-vertical</v-icon>
+                  <v-icon>mdi-plus</v-icon>
                 </v-btn>
                 <v-btn class="ml-2" x-small fab elevation="0" @click="abrirOpcoes">
                   <v-icon>mdi-dots-vertical</v-icon>
@@ -69,6 +89,9 @@ import {db} from '@/firebase'
     },
     data(){
       return{
+        id_selecionado: '',
+        color_tag: '',
+        nome_tag: '',
         active_add_tag: false,
         descricao_task: '',
         titulo_task: '',
@@ -76,7 +99,26 @@ import {db} from '@/firebase'
       }
     },
     methods: {
-      abrirAddTag(){
+      addTag(){
+        this.$store.commit('CHANGE_LOADER', true);
+        this.$store.state.db.collection('todos').doc(this.id_selecionado).collection('tag').add({
+          cor: this.color_tag,
+          nome_tag: this.nome_tag
+        })
+        .then((doc) => {
+          console.log(doc, 'add com sucesso a tag');
+        })
+        .catch(err => {
+          console.log(err);
+        })
+        .finally(() => {
+          this.color_tag = '';
+          this.nome_tag = '';
+          this.$store.commit('CHANGE_LOADER', false);
+        })
+      },
+      abrirAddTag(id){
+        this.id_selecionado = id;
         this.active_add_tag = true;
       },
       abrirOpcoes(){
