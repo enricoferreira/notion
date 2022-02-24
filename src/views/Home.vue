@@ -1,10 +1,10 @@
 <template>
-<v-row class="dash" >
+<v-col cols="12" class="dash d-flex">
 
   <v-col cols="12" md="4" sm="6" class="dash">
     <v-sheet  class="overflow-auto fill-height elevation-0 rounded pl-3 pr-6 py-3 grey lighten-5 mr-2">
       <draggable class="list-group" :list="list1" group="card" @change="log">
-        <v-card v-for="(li, index) in list1" :key="index + 'sheet1'" min-height="180" max-height class="w-100 mb-4 elevation-4">
+        <v-card v-for="(li, index) in list1" :key="index + 'sheet1'" min-height="180" max-height class="w-100 mb-4 elevation-4 drag-cursor" >
           <v-card-title class="py-2">
             <div class="tag" :class="li.tag"></div>
             <v-spacer></v-spacer>
@@ -26,7 +26,7 @@
 
     <v-sheet  class="overflow-auto fill-height elevation-0 rounded pl-3 pr-6 py-3 grey lighten-5 mr-2">
       <draggable class="list-group" :list="list2" group="card" @change="log">
-        <v-card v-for="(li, index) in list2" :key="index + 'sheet1'" min-height="180" max-height class="w-100 mb-4 elevation-4">
+        <v-card v-for="(li, index) in list2" :key="index + 'sheet1'" min-height="180" max-height class="w-100 mb-4 elevation-4 drag-cursor">
           <v-card-title class="py-2">
             <div class="tag" :class="li.tag"></div>
             <v-spacer></v-spacer>
@@ -44,7 +44,7 @@
       </draggable>
     </v-sheet>
   </v-col>
-</v-row>
+</v-col>
 </template>
 
 <script>

@@ -58,6 +58,10 @@ export default {
   cursor: pointer;
 }
 
+.drag-cursor{
+  cursor: grab !important;
+}
+
 .w-100{
   width: 100%;
 }
