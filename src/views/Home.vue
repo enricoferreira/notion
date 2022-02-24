@@ -38,7 +38,7 @@
                 <v-btn x-small fab elevation="0">
                   <v-icon>mdi-dots-vertical</v-icon>
                 </v-btn>
-                <v-btn class="ml-2" color="error" x-small fab elevation="0">
+                <v-btn @click="remove(todo.id)" class="ml-2" color="error" x-small fab elevation="0">
                   <v-icon>mdi-delete</v-icon>
                 </v-btn>
               </v-card-title>
@@ -84,6 +84,18 @@ import {db} from '@/firebase'
         }
         return true
 
+      },
+      async remove(id){
+        this.$store.commit('CHANGE_LOADER', true);
+        await this.$store.state.db.collection('todos').doc(id).delete()
+          .then(() => {
+          })
+          .catch((error) => {
+            console.error("Error writing document: ", error);
+          })
+          .finally(() => {
+            this.$store.commit('CHANGE_LOADER', false);
+          })
       },
       async add(){
         if(this.$refs['form-task'].validate()){
